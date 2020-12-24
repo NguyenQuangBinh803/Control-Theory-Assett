@@ -12,6 +12,8 @@ class SuspensionModel(SystemAbstract):
         self.spring_const_body = spring_const_body
         self.damping_const_suspension = damping_const_supension
         self.damping_const_body = damping_const_body
+        self.state_vector = np.zeros((1, 4), dtype=float)
+        self.control_vector = np.zeros((1, 4), dtype=float)
 
     def system_model(self):
         self.A = np.zeros((4, 4), dtype=float)
@@ -28,8 +30,20 @@ class SuspensionModel(SystemAbstract):
         self.A[3][2] = - (
                 self.spring_const_body / self.body_mass + self.spring_const_body / self.suspension_mass + self.spring_const_suspension / self.suspension_mass)
 
+        self.B = np.zeros((4, 2), dtype=float)
+        self.B[1][0] = 1 / self.body_mass
+        self.B[1][1] = self.damping_const_body * self.damping_const_suspension / self.body_mass / self.suspension_mass
+        self.B[2][1] = -self.damping_const_suspension / self.suspension_mass
+        self.B[3][0] = (1 / self.body_mass + 1 / self.suspension_mass)
+        self.B[3][1] = -self.spring_const_suspension / self.suspension_mass
+
+        self.C = np.zeros((1, 4), dtype=float)
+        self.C[0][2] = 1
+        self.D = np.zeros((1, 2), dtype=float)
+
     def display_system_model(self):
         print(self.A)
+        print(self.B)
 
 
 if __name__ == "__main__":
