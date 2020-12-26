@@ -1,6 +1,6 @@
 '''
 Author: Edward J. C. Ashenbert
-Description: functioṇ(int argc, char* argv[])if( argc == 2 && ( CheckParameter(argv[1]) == PARAMERTER_CHECK_SETTINGS))
+Description:
 
 '''
 
